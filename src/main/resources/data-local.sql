@@ -1,0 +1,21 @@
+INSERT INTO product (id, name) VALUES (1, 'ice cream');
+INSERT INTO product (id, name) VALUES (2, 'caffe latte');
+INSERT INTO product (id, name) VALUES (3, 'vanilla latte');
+INSERT INTO product (id, name) VALUES (4, 'cold brew');
+INSERT INTO product (id, name) VALUES (5, 'mocha');
+INSERT INTO product (id, name) VALUES (6, 'espresso');
+INSERT INTO product (id, name) VALUES (7, 'green tea');
+INSERT INTO product (id, name) VALUES (8, 'black tea');
+INSERT INTO product (id, name) VALUES (9, 'lemonade');
+INSERT INTO product (id, name) VALUES (10, 'kkul coffee');
+
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (1, 3, 3);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (2, 7, 7);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (3, 1, 1);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (4, 9, 9);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (5, 5, 5);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (6, 2, 2);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (7, 8, 8);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (8, 4, 4);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (9, 6, 6);
+INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (10, 0, 0);
