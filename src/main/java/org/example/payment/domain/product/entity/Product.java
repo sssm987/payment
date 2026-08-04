@@ -2,6 +2,7 @@ package org.example.payment.domain.product.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -15,4 +16,8 @@ public class Product {
 
     @Column(name = "name")
     private String name;
+
+    @Getter
+    @Column(name = "price", nullable = false)
+    private Long price;
 }

@@ -1,0 +1,11 @@
+package org.example.payment.application.payment.cmd;
+
+import lombok.Builder;
+
+@Builder
+public record PaymentApproveCmd(
+        long paymentId,
+        long orderId,
+        long fee
+) {
+}
