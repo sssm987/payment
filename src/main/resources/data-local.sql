@@ -1,13 +1,13 @@
-INSERT INTO product (id, name) VALUES (1, 'ice cream');
-INSERT INTO product (id, name) VALUES (2, 'caffe latte');
-INSERT INTO product (id, name) VALUES (3, 'vanilla latte');
-INSERT INTO product (id, name) VALUES (4, 'cold brew');
-INSERT INTO product (id, name) VALUES (5, 'mocha');
-INSERT INTO product (id, name) VALUES (6, 'espresso');
-INSERT INTO product (id, name) VALUES (7, 'green tea');
-INSERT INTO product (id, name) VALUES (8, 'black tea');
-INSERT INTO product (id, name) VALUES (9, 'lemonade');
-INSERT INTO product (id, name) VALUES (10, 'kkul coffee');
+INSERT INTO product (id, name, price) VALUES (1, 'ice cream',1000);
+INSERT INTO product (id, name, price) VALUES (2, 'caffe latte',2000);
+INSERT INTO product (id, name, price) VALUES (3, 'vanilla latte',3422);
+INSERT INTO product (id, name, price) VALUES (4, 'cold brew',12131);
+INSERT INTO product (id, name, price) VALUES (5, 'mocha',124124);
+INSERT INTO product (id, name, price) VALUES (6, 'espresso',232);
+INSERT INTO product (id, name, price) VALUES (7, 'green tea',12402);
+INSERT INTO product (id, name, price) VALUES (8, 'black tea',12329);
+INSERT INTO product (id, name, price) VALUES (9, 'lemonade',12312);
+INSERT INTO product (id, name, price) VALUES (10, 'kkul coffee',1232131);
 
 INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (1, 3, 3);
 INSERT INTO inventory (product_id, stock, initiative_stock) VALUES (2, 7, 7);

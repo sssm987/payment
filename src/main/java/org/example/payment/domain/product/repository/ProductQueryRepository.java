@@ -28,7 +28,7 @@ public class ProductQueryRepository {
                         inventory.initiativeStock
                 ))
                 .from(product)
-                .leftJoin(order).on(order.product.eq(product))
+                .leftJoin(order).on(order.productId.eq(product.id))
                 .leftJoin(inventory).on(inventory.product.eq(product))
                 .where(product.id.eq(id))
                 .groupBy(product.id, inventory.stock, inventory.initiativeStock)

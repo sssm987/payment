@@ -27,7 +27,7 @@ public class OrderQueryRepository {
                         payment.memberId
                 ))
                 .from(order)
-                .leftJoin(payment).on(payment.order.eq(order))
+                .leftJoin(payment).on(payment.orderId.eq(order.id))
                 .where(order.id.eq(id))
                 .fetchOne();
     }

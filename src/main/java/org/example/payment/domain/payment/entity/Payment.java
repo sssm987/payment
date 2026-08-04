@@ -14,11 +14,12 @@ public class Payment {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 
     @Column(name = "order_id")
-    private Long order;
+    private Long orderId;
 
     @Column(name = "member_id", nullable = false)
     private Long memberId;
@@ -33,7 +34,7 @@ public class Payment {
     @Builder(access = AccessLevel.PRIVATE)
     private Payment(long memberId, long orderId, long fee){
         this.memberId = memberId;
-        this.order = orderId;
+        this.orderId = orderId;
         this.fee = fee;
         this.status = PaymentStatus.READY;
     }

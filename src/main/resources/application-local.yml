@@ -20,3 +20,6 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+
+pg:
+  url: "http://localhost:8081"

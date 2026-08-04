@@ -9,8 +9,6 @@ import org.example.payment.application.order.service.OrderService;
 import org.example.payment.application.order.usecase.OrderUseCase;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/order")
 @RequiredArgsConstructor

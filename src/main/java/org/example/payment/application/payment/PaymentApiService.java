@@ -25,7 +25,7 @@ public class PaymentApiService {
                 .build();
 
         PaymentApproveResponseCmd response = webClientPg.post()
-                .uri("/api/v1/payments/approve")
+                .uri("/api/v1/pg/approve")
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(PaymentApproveResponseCmd.class)
