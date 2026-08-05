@@ -30,6 +30,11 @@ public class ProductService {
         if(inventoryRepository.decrease(productId) == 0)
             throw new DomainException(ErrorCode.PRODUCT_INVENTORY_SHORT);
     }
+    @Transactional
+    public void inventoryIncrease(long productId){
+        if(inventoryRepository.increase(productId) == 0)
+            throw new DomainException(ErrorCode.PRODUCT_NOT_FOUND);
+    }
     public long findProductPrice(long productId){
         return productRepository.findById(productId).orElseThrow(() -> new DomainException(ErrorCode.PRODUCT_NOT_FOUND)).getPrice();
     }

@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.payment.domain.order.enums.OrderStatus;
-import org.example.payment.domain.product.entity.Product;
 
 @Entity
 @Table(name = "orders")
@@ -41,5 +40,11 @@ public class Order {
     }
     public void paid(){
         this.status = OrderStatus.PAID;
+    }
+    public void cancel(){
+        this.status = OrderStatus.CANCELLED;
+    }
+    public void systemCancel(){
+        this.status = OrderStatus.SYSTEM_CANCELLED;
     }
 }

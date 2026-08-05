@@ -44,4 +44,10 @@ public class Payment {
     public void success(){
         this.status = PaymentStatus.SUCCESS;
     }
+    public void fail(){
+        this.status = PaymentStatus.FAILED;
+    }
+    public void systemCancel(){
+        this.status = PaymentStatus.SYSTEM_CANCELLED;
+    }
 }

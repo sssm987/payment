@@ -5,7 +5,6 @@ import org.example.payment.api.order.dto.response.OrderSelectResponseDTO;
 import org.example.payment.domain.order.entity.Order;
 import org.example.payment.domain.order.repository.OrderQueryRepository;
 import org.example.payment.domain.order.repository.OrderRepoistory;
-import org.example.payment.domain.product.repository.ProductRepository;
 import org.example.payment.global.common.DomainException;
 import org.example.payment.global.common.ErrorCode;
 import org.springframework.stereotype.Service;
@@ -27,10 +26,23 @@ public class OrderService {
         Order order = Order.create(memberId,productId);
         return orderRepoistory.save(order).getId();
     }
+    @Transactional
     public void orderPaid(long orderId){
         Order order = orderRepoistory.findById(orderId)
                 .orElseThrow(() -> new DomainException(ErrorCode.ORDER_NOT_FOUND));
 
         order.paid();
+    }
+    @Transactional
+    public void orderCancel(long orderId){
+        Order order = orderRepoistory.findById(orderId)
+                .orElseThrow(() -> new DomainException(ErrorCode.ORDER_NOT_FOUND));
+        order.cancel();
+    }
+    @Transactional
+    public void orderSystemCancel(long orderId){
+        Order order = orderRepoistory.findById(orderId)
+                .orElseThrow(() -> new DomainException(ErrorCode.ORDER_NOT_FOUND));
+        order.systemCancel();
     }
 }

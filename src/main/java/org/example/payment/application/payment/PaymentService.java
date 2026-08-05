@@ -25,4 +25,14 @@ public class PaymentService {
                 .orElseThrow(() -> new DomainException(ErrorCode.PAYMENT_NOT_FOUND));
         payment.success();
     }
+    public void paymentFail(long paymentId){
+        Payment payment = paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new DomainException(ErrorCode.PAYMENT_NOT_FOUND));
+        payment.fail();
+    }
+    public void paymentSystemCancel(long paymentId){
+        Payment payment = paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new DomainException(ErrorCode.PAYMENT_NOT_FOUND));
+        payment.systemCancel();
+    }
 }
