@@ -8,8 +8,6 @@ import org.example.payment.global.common.DomainException;
 import org.example.payment.global.common.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +16,7 @@ public class PaymentApiService {
     private final WebClient webClientPg;
 
     public PaymentApproveResponseCmd approve(PaymentApproveCmd cmd) {
+
         PaymentApproveRequestCmd request = PaymentApproveRequestCmd.builder()
                 .orderId(cmd.orderId())
                 .paymentId(cmd.paymentId())
