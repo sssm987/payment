@@ -10,7 +10,8 @@ public enum ErrorCode {
     PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PAYMENT_NOT_FOUND", "주문을 찾을 수 없습니다."),
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER_NOT_FOUND", "주문을 찾을 수 없습니다."),
     RETRY_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER_NOT_FOUND", "요청이력을 찾을 수 없습니다."),
-    PG_API_NOT_RESPONSE(HttpStatus.TOO_MANY_REQUESTS, "PG_API_NOT_RESPONSE", "PG 서버 응답이 없습니다.");
+    PG_API_NOT_RESPONSE(HttpStatus.TOO_MANY_REQUESTS, "PG_API_NOT_RESPONSE", "PG 서버 응답이 없습니다."),
+    PG_API_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "PG_API_FAIL", "PG 서버 요청이 실패하였습니다.");
     private final HttpStatus status;
     private final String code;
     private final String message;

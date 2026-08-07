@@ -1,7 +1,8 @@
-package org.example.payment.application.payment;
+package org.example.payment.application.payment.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.payment.application.payment.cmd.*;
+import org.example.payment.domain.payment.enums.PaymentApproveStatus;
 import org.example.payment.global.common.DomainException;
 import org.example.payment.global.common.ErrorCode;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,10 @@ public class PaymentApiService {
 
         if (response == null) {
             throw new DomainException(ErrorCode.PG_API_NOT_RESPONSE);
+        }
+
+        if (response.status() != PaymentApproveStatus.SUCCESS) {
+            throw new DomainException(ErrorCode.PG_API_FAIL);
         }
 
         return response;

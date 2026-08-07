@@ -2,7 +2,7 @@ package org.example.payment.application.retryhistory.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.example.payment.application.order.service.OrderTransactionService;
-import org.example.payment.application.payment.PaymentApiService;
+import org.example.payment.application.payment.service.PaymentApiService;
 import org.example.payment.application.payment.cmd.PaymentApproveCmd;
 import org.example.payment.application.payment.cmd.PaymentCancelCmd;
 import org.example.payment.application.retryhistory.dto.PaymentApproveRetryPayload;
