@@ -2,6 +2,7 @@ package org.example.payment.application.order.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.payment.api.order.dto.request.OrderCreateRequestDTO;
+import org.example.payment.application.order.cmd.OrderCreateCmd;
 import org.example.payment.application.order.context.OrderContext;
 import org.example.payment.application.payment.cmd.PaymentCreateRequestCmd;
 import org.example.payment.application.payment.service.PaymentService;
@@ -20,7 +21,7 @@ public class OrderTransactionService {
     private final RetryHistoryService retryHistoryService;
 
     @Transactional
-    public OrderContext prepareOrder(OrderCreateRequestDTO dto){
+    public OrderContext prepareOrder(OrderCreateCmd dto){
         productService.inventoryDeduction(dto.productId());
         long productPrice = productService.findProductPrice(dto.productId());
         long orderId = orderService.orderCreate(dto.memberId(),dto.productId());
@@ -29,36 +30,21 @@ public class OrderTransactionService {
                 .orderId(orderId)
                 .fee(productPrice)
                 .build());
-        long retryId = retryHistoryService.retryHistoryApproveCreate(productPrice,orderId,paymentId);
+        long retryId = retryHistoryService.retryHistoryApproveCreate(paymentId);
 
-        return new OrderContext(productPrice,orderId,paymentId,retryId);
+        return new OrderContext(productPrice,orderId,paymentId,retryId,dto.productId());
     }
     @Transactional
-    public void compensateApprovalFailure(long productId, OrderContext orderContext) {
-        productService.inventoryIncrease(productId);
-        orderService.orderSystemCancel(orderContext.orderId());
-        paymentService.paymentFail(orderContext.paymentId());
-    }
-    @Transactional
-    public void completePayment(OrderContext orderContext) {
-        orderService.orderPaid(orderContext.orderId());
-        paymentService.paymentSuccess(orderContext.paymentId());
-    }
-    @Transactional
-    public void completePayment(long orderId, long paymentId) {
+    public void completePayment(long orderId, long paymentId, long retryId) {
         orderService.orderPaid(orderId);
         paymentService.paymentSuccess(paymentId);
+        retryHistoryService.retryHistorySuccess(retryId);
     }
     @Transactional
-    public void compensateCompletionFailure(long productId, OrderContext orderContext) {
-        productService.inventoryIncrease(productId);
-        orderService.orderSystemCancel(orderContext.orderId());
-        paymentService.paymentSystemCancel(orderContext.paymentId());
-    }
-    @Transactional
-    public void compensateCompletionFailure(long productId, long orderId, long paymentId) {
+    public void compensateCompletionFailure(long productId, long orderId, long paymentId,long retryId) {
         productService.inventoryIncrease(productId);
         orderService.orderSystemCancel(orderId);
+        retryHistoryService.retryHistorySuccess(retryId);
         paymentService.paymentSystemCancel(paymentId);
     }
 }

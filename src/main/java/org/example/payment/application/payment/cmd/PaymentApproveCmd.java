@@ -6,6 +6,8 @@ import lombok.Builder;
 public record PaymentApproveCmd(
         long paymentId,
         long orderId,
-        long fee
+        long productId,
+        long fee,
+        long retryId
 ) {
 }

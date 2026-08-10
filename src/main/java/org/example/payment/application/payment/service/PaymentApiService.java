@@ -40,8 +40,8 @@ public class PaymentApiService {
     }
     public void cancel(PaymentCancelCmd cmd){
         PaymentCancelRequestCmd request = PaymentCancelRequestCmd.builder()
-                .transactionId(cmd.transactionId())
-                .amount(cmd.amount())
+                .transactionId(cmd.paymentId())
+                .amount(cmd.fee())
                 .build();
 
         webClientPg.post()

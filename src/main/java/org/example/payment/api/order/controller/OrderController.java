@@ -26,6 +26,6 @@ public class OrderController {
     @PostMapping()
     @Operation(summary = "주문 생성 및 결제", description = "주문 생성 및 결제를 합니다.")
     public void orderCreate(@RequestBody OrderCreateRequestDTO dto){
-        orderUseCase.createOrder(dto);
+        orderUseCase.createOrder(dto.toCmd());
     }
 }

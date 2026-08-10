@@ -34,12 +34,6 @@ public class OrderService {
         order.paid();
     }
     @Transactional
-    public void orderCancel(long orderId){
-        Order order = orderRepoistory.findById(orderId)
-                .orElseThrow(() -> new DomainException(ErrorCode.ORDER_NOT_FOUND));
-        order.cancel();
-    }
-    @Transactional
     public void orderSystemCancel(long orderId){
         Order order = orderRepoistory.findById(orderId)
                 .orElseThrow(() -> new DomainException(ErrorCode.ORDER_NOT_FOUND));

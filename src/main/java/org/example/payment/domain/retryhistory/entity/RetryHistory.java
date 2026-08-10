@@ -17,6 +17,9 @@ public class RetryHistory {
     @Getter
     private Long id;
 
+    @Column(name = "payment_id", nullable = false)
+    private Long paymentId;
+
     @Column(name = "retry_count")
     private int retryCount;
 
@@ -29,33 +32,29 @@ public class RetryHistory {
     @Getter
     private RetryApiType retryApiType;
 
-    @Column(name = "request_payload", columnDefinition = "TEXT", nullable = false)
-    @Getter
-    private String requestPayload;
-
     @Builder(access = AccessLevel.PRIVATE)
-    public RetryHistory(RetryApiType retryApiType, String requestPayload) {
+    public RetryHistory(RetryApiType retryApiType,long paymentId) {
         this.retryCount = 0;
         this.status = RetryStatus.READY;
+        this.paymentId = paymentId;
         this.retryApiType = retryApiType;
-        this.requestPayload = requestPayload;
     }
-    public static RetryHistory create(RetryApiType retryApiType, String requestPayload){
+    public static RetryHistory create(RetryApiType retryApiType,long paymentId){
         return RetryHistory.builder()
                 .retryApiType(retryApiType)
-                .requestPayload(requestPayload)
+                .paymentId(paymentId)
                 .build();
     }
     public void success(){
         this.status = RetryStatus.SUCCESS;
     }
-    public void retry(){
-        this.status = RetryStatus.RETRY;
+    public void fail(){
+        this.status = RetryStatus.FAILED;
     }
     public void increaseRetryCount(){
         this.retryCount++;
-        if(this.retryCount >= 5){
-            this.status = RetryStatus.FAILED;
-        }
+    }
+    public boolean isCompleted(){
+        return this.status.equals(RetryStatus.SUCCESS) || this.status.equals(RetryStatus.FAILED);
     }
 }

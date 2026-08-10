@@ -1,5 +1,6 @@
 package org.example.payment.infrastructure.config;
 
+import org.example.payment.infrastructure.recoverer.PaymentMessageRecoverer;
 import org.springframework.amqp.rabbit.config.StatelessRetryOperationsInterceptor;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.Queue;
@@ -14,12 +15,15 @@ public class RabbitMqConfig {
     public static final String PAYMENT_APPROVE_QUEUE =
             "payment.approve.queue";
 
+    public static final String PAYMENT_CANCEL_QUEUE =
+            "payment.cancel.queue";
+
     @Bean
     public Queue paymentApproveQueue() {
         return new Queue(PAYMENT_APPROVE_QUEUE, true);
     }
     @Bean
-    public StatelessRetryOperationsInterceptor rabbitRetryInterceptor() {
+    public StatelessRetryOperationsInterceptor rabbitRetryInterceptor(PaymentMessageRecoverer recoverer) {
         return RetryInterceptorBuilder
                 .stateless()
                 .maxRetries(2)
@@ -28,6 +32,7 @@ public class RabbitMqConfig {
                         2.0,
                         5000
                 )
+                .recoverer(recoverer)
                 .build();
     }
 
