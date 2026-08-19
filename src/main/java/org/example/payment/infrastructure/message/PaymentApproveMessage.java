@@ -7,7 +7,6 @@ public record PaymentApproveMessage(
         long orderId,
         long paymentId,
         long productId,
-        long retryId,
         long amount
 ) {
 }

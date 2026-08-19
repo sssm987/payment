@@ -16,15 +16,6 @@ public class OrderUseCase {
     private final OrderTransactionService orderTransactionService;
 
     public void createOrder(OrderCreateCmd cmd) {
-        OrderContext orderContext = orderTransactionService.prepareOrder(cmd);
-
-        paymentService.paymentApprovalPublication(PaymentApproveCmd.builder()
-                .orderId(orderContext.orderId())
-                .paymentId(orderContext.paymentId())
-                .productId(orderContext.productId())
-                .fee(orderContext.productPrice())
-                .retryId(orderContext.retryId())
-                .build());
-
+        orderTransactionService.prepareOrder(cmd);
     }
 }

@@ -4,10 +4,10 @@ import lombok.Builder;
 
 @Builder
 public record PaymentCancelCmd(
+        long transactionId,
         long paymentId,
         long orderId,
         long productId,
-        long fee,
-        long retryId
+        long fee
 ) {
 }

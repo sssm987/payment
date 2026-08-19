@@ -41,17 +41,16 @@ public class PaymentService {
                 .paymentId(paymentApproveCmd.paymentId())
                 .orderId(paymentApproveCmd.orderId())
                 .productId(paymentApproveCmd.productId())
-                .retryId(paymentApproveCmd.retryId())
                 .amount(paymentApproveCmd.fee())
                 .build());
     }
     public void paymentCancelPublication(PaymentCancelCmd paymentCancelCmd){
         paymentEventPublisher.publishCancel(PaymentCancelMessage.builder()
-                .transactionId(paymentCancelCmd.paymentId())
+                .transactionId(paymentCancelCmd.transactionId())
+                .paymentId(paymentCancelCmd.paymentId())
                 .amount(paymentCancelCmd.fee())
                 .orderId(paymentCancelCmd.orderId())
                 .productId(paymentCancelCmd.productId())
-                .retryId(paymentCancelCmd.retryId())
                 .build());
     }
 }

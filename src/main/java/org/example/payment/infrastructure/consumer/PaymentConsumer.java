@@ -22,15 +22,14 @@ public class PaymentConsumer {
                                 .orderId(message.orderId())
                                 .paymentId(message.paymentId())
                                 .productId(message.productId())
-                                .retryId(message.retryId())
                                 .fee(message.amount())
                                 .build());
     }
     @RabbitListener(queues = RabbitMqConfig.PAYMENT_CANCEL_QUEUE)
     public void cancelConsume(PaymentCancelMessage message) {
         paymentUseCase.cancel(PaymentCancelCmd.builder()
-                .paymentId(message.transactionId())
-                .retryId(message.retryId())
+                .transactionId(message.transactionId())
+                .paymentId(message.paymentId())
                 .orderId(message.orderId())
                 .productId(message.productId())
                 .fee(message.amount())

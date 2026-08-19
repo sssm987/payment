@@ -18,24 +18,14 @@ public class RabbitPaymentPublisher implements PaymentEventPublisher {
     public void publishApprove(PaymentApproveMessage message) {
         rabbitTemplate.convertAndSend(
                 RabbitMqConfig.PAYMENT_APPROVE_QUEUE,
-                message,
-                msg -> {
-                    msg.getMessageProperties()
-                            .setHeader("retryId", message.retryId());
-                    return msg;
-                }
+                message
         );
     }
     @Override
     public void publishCancel(PaymentCancelMessage message) {
         rabbitTemplate.convertAndSend(
                 RabbitMqConfig.PAYMENT_CANCEL_QUEUE,
-                message,
-                msg -> {
-                    msg.getMessageProperties()
-                            .setHeader("retryId", message.retryId());
-                    return msg;
-                }
+                message
         );
     }
 }

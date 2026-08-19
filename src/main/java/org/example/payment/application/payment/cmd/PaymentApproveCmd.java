@@ -7,7 +7,6 @@ public record PaymentApproveCmd(
         long paymentId,
         long orderId,
         long productId,
-        long fee,
-        long retryId
+        long fee
 ) {
 }

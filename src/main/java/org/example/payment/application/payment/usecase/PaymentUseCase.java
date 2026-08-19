@@ -5,9 +5,11 @@ import org.example.payment.application.order.cmd.OrderCancelCmd;
 import org.example.payment.application.order.service.OrderTransactionService;
 import org.example.payment.application.order.usecase.OrderUseCase;
 import org.example.payment.application.payment.cmd.PaymentApproveCmd;
+import org.example.payment.application.payment.cmd.PaymentApproveResponseCmd;
 import org.example.payment.application.payment.cmd.PaymentCancelCmd;
 import org.example.payment.application.payment.service.PaymentApiService;
 import org.example.payment.application.payment.service.PaymentService;
+import org.example.payment.application.retryhistory.dto.PaymentCancelRetryPayload;
 import org.example.payment.application.retryhistory.service.RetryHistoryService;
 import org.springframework.stereotype.Component;
 
@@ -16,38 +18,28 @@ import org.springframework.stereotype.Component;
 public class PaymentUseCase {
 
     private final PaymentApiService paymentApiService;
-    private final PaymentService paymentService;
     private final OrderTransactionService orderTransactionService;
     private final RetryHistoryService retryHistoryService;
 
     public void approve(PaymentApproveCmd cmd) {
-
-        if(retryHistoryService.isCompleted(cmd.retryId()))
-            return;
-        retryHistoryService.retryIncrease(cmd.retryId());
-        paymentApiService.approve(cmd);
+        PaymentApproveResponseCmd responseCmd = paymentApiService.approve(cmd);
         try {
             orderTransactionService.completePayment(
                     cmd.orderId(),
-                    cmd.paymentId(),
-                    cmd.retryId()
+                    cmd.paymentId()
             );
         }catch(Exception e) {
-            retryHistoryService.retryHistorySuccess(cmd.retryId());
-            long retryId = retryHistoryService.retryHistoryCancelCreate(cmd.paymentId());
-            paymentService.paymentCancelPublication(PaymentCancelCmd.builder()
-                    .fee(cmd.fee())
-                    .paymentId(cmd.paymentId())
+            retryHistoryService.retryHistoryCancelCreate(PaymentCancelRetryPayload.builder()
+                    .transactionId(responseCmd.transactionId())
+                    .amount(responseCmd.amount())
                     .orderId(cmd.orderId())
                     .productId(cmd.productId())
-                    .retryId(retryId).build());
+                    .paymentId(cmd.paymentId())
+                    .build());
         }
     }
     public void cancel(PaymentCancelCmd cmd){
-        if(retryHistoryService.isCompleted(cmd.retryId()))
-            return;
-        retryHistoryService.retryIncrease(cmd.retryId());
         paymentApiService.cancel(cmd);
-        orderTransactionService.compensateCompletionFailure(cmd.productId(),cmd.orderId(),cmd.paymentId(),cmd.retryId());
+        orderTransactionService.compensateCompletionFailure(cmd.productId(),cmd.orderId(),cmd.paymentId());
     }
 }
