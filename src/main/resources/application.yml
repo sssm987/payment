@@ -15,3 +15,6 @@ management:
     health:
       probes:
         enabled: true
+
+pg:
+  url: "http://pg-server:8081"
