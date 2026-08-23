@@ -1,6 +1,7 @@
 package org.example.payment.application.retryhistory.usecase;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.payment.application.order.service.OrderTransactionService;
 import org.example.payment.application.payment.PaymentApiService;
 import org.example.payment.application.payment.cmd.PaymentApproveCmd;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class RetryUseCase {
 
     private final RetryHistoryService retryHistoryService;
@@ -42,6 +44,7 @@ public class RetryUseCase {
             retryHistoryService.retryHistorySuccess(history.getId());
 
         } catch (Exception e) {
+            log.info("재시도 실패. historyId={}",history.getId());
             retryHistoryService.retryIncrease(history.getId());
         }
     }
@@ -51,7 +54,7 @@ public class RetryUseCase {
                         history.getRequestPayload(),
                         PaymentApproveRetryPayload.class
                 );
-
+        log.info("재시도 승인 api 시작. historyId={}, orderId={}, paymentId={}",history.getId(),payload.orderId(),payload.paymentId());
         paymentApiService.approve(
                 PaymentApproveCmd.builder()
                         .orderId(payload.orderId())
@@ -59,7 +62,7 @@ public class RetryUseCase {
                         .fee(payload.productPrice())
                         .build()
         );
-
+        log.info("재시도 승인 db 시작. historyId={}, orderId={}, paymentId={}",history.getId(),payload.orderId(),payload.paymentId());
         orderTransactionService.completePayment(
                 payload.orderId(),payload.paymentId()
         );
@@ -70,14 +73,14 @@ public class RetryUseCase {
                         history.getRequestPayload(),
                         PaymentCancelRetryPayload.class
                 );
-
+        log.info("재시도 취소 api 시작. historyId={}, orderId={}, paymentId={}",history.getId(),payload.orderId(),payload.paymentId());
         paymentApiService.cancel(
                 PaymentCancelCmd.builder()
                         .transactionId(payload.transactionId())
                         .amount(payload.amount())
                         .build()
         );
-
+        log.info("재시도 취소 db 시작. historyId={}, orderId={}, paymentId={}",history.getId(),payload.orderId(),payload.paymentId());
         orderTransactionService.compensateCompletionFailure(
                 payload.productId(),
                 payload.orderId(),
