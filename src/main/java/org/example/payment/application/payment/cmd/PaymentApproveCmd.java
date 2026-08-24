@@ -10,4 +10,8 @@ public record PaymentApproveCmd(
         long fee,
         long retryId
 ) {
+    @Override
+    public String toString() {
+        return "paymentId : "+paymentId+"\norderId : "+orderId+"\nproductId : "+productId+"\nretryId : "+retryId+"\nfee : "+fee;
+    }
 }

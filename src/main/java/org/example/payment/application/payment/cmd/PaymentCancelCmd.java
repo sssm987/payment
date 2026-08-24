@@ -10,4 +10,8 @@ public record PaymentCancelCmd(
         long fee,
         long retryId
 ) {
+    @Override
+    public String toString() {
+        return "paymentId : "+paymentId+"\norderId : "+orderId+"\nproductId : "+productId+"\nfee : "+fee;
+    }
 }

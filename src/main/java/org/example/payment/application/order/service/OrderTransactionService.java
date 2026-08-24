@@ -32,7 +32,7 @@ public class OrderTransactionService {
                 .build());
         long retryId = retryHistoryService.retryHistoryApproveCreate(paymentId);
 
-        return new OrderContext(productPrice,orderId,paymentId,retryId,dto.productId());
+        return new OrderContext(productPrice,orderId,paymentId,dto.productId(),retryId);
     }
     @Transactional
     public void completePayment(long orderId, long paymentId, long retryId) {

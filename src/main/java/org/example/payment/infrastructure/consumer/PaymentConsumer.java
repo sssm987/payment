@@ -1,6 +1,7 @@
 package org.example.payment.infrastructure.consumer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.payment.application.payment.cmd.PaymentApproveCmd;
 import org.example.payment.application.payment.cmd.PaymentCancelCmd;
 import org.example.payment.application.payment.usecase.PaymentUseCase;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentConsumer {
 
     private final PaymentUseCase paymentUseCase;
