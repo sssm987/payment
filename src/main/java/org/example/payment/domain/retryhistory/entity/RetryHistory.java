@@ -7,10 +7,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.payment.domain.retryhistory.enums.RetryApiType;
 import org.example.payment.domain.retryhistory.enums.RetryStatus;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "retry_history")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class RetryHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +34,10 @@ public class RetryHistory {
     @Column(name = "request_payload", columnDefinition = "TEXT", nullable = false)
     @Getter
     private String requestPayload;
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     @Builder(access = AccessLevel.PRIVATE)
     public RetryHistory(RetryApiType retryApiType, String requestPayload) {
