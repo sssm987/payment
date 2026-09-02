@@ -1,6 +1,7 @@
 package org.example.payment.application.retryhistory.usecase;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.payment.application.payment.cmd.PaymentApproveCmd;
 import org.example.payment.application.payment.cmd.PaymentCancelCmd;
 import org.example.payment.application.payment.service.PaymentService;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class RetryUseCase {
 
     private final ObjectMapper objectMapper;
@@ -43,7 +45,7 @@ public class RetryUseCase {
                         history.getRequestPayload(),
                         PaymentApproveRetryPayload.class
                 );
-
+        log.info("승인 메세지 발행 orderId={}, paymentId={}",payload.orderId(),payload.paymentId());
         paymentService.paymentApprovalPublication(PaymentApproveCmd.builder()
                 .orderId(payload.orderId())
                 .paymentId(payload.paymentId())
@@ -57,7 +59,7 @@ public class RetryUseCase {
                         history.getRequestPayload(),
                         PaymentCancelRetryPayload.class
                 );
-
+        log.info("취소 메세지 발행 orderId={}, paymentId={}",payload.orderId(),payload.paymentId());
         paymentService.paymentCancelPublication(PaymentCancelCmd.builder()
                 .orderId(payload.orderId())
                 .transactionId(payload.transactionId())

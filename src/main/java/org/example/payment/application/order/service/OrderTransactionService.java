@@ -1,6 +1,7 @@
 package org.example.payment.application.order.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.payment.api.order.dto.request.OrderCreateRequestDTO;
 import org.example.payment.application.order.cmd.OrderCreateCmd;
 import org.example.payment.application.order.context.OrderContext;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderTransactionService {
 
     private final ProductService productService;
@@ -23,6 +25,7 @@ public class OrderTransactionService {
 
     @Transactional
     public void prepareOrder(OrderCreateCmd dto){
+        log.info("주문 생성 시작 productId={}, memberId={}",dto.productId(),dto.memberId());
         productService.inventoryDeduction(dto.productId());
 
         long productPrice = productService.findProductPrice(dto.productId());
@@ -32,7 +35,7 @@ public class OrderTransactionService {
                 .orderId(orderId)
                 .fee(productPrice)
                 .build());
-
+        log.info("OutBox 이벤트 생성 orderId={}, paymentId={}",orderId,paymentId);
         retryHistoryService.retryHistoryApproveCreate(PaymentApproveRetryPayload.builder()
                 .orderId(orderId)
                 .productPrice(productPrice)
@@ -40,6 +43,7 @@ public class OrderTransactionService {
                 .productId(dto.productId())
                 .build()
         );
+        log.info("주문 생성 완료 orderId={}, paymentId={}",orderId,paymentId);
     }
     @Transactional
     public void completePayment(long orderId, long paymentId) {

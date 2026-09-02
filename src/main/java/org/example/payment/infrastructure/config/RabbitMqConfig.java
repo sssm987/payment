@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
 
 @Configuration
 public class RabbitMqConfig {
@@ -40,14 +41,22 @@ public class RabbitMqConfig {
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             ConnectionFactory connectionFactory,
-            StatelessRetryOperationsInterceptor rabbitRetryInterceptor
+            StatelessRetryOperationsInterceptor rabbitRetryInterceptor,
+            JacksonJsonMessageConverter rabbitMessageConverter
     ) {
         SimpleRabbitListenerContainerFactory factory =
                 new SimpleRabbitListenerContainerFactory();
 
         factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(rabbitMessageConverter);
         factory.setAdviceChain(rabbitRetryInterceptor);
 
         return factory;
+    }
+    @Bean
+    public JacksonJsonMessageConverter  rabbitMessageConverter() {
+        return new JacksonJsonMessageConverter(
+                "org.example.payment.infrastructure.message"
+        );
     }
 }
